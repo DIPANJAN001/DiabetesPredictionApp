@@ -1,16 +1,27 @@
 import streamlit as st
+import model
+
 
 # Title of the web app
-st.title("Simple Streamlit App")
-
+st.title("Diabetes predictor")
+st.write("Dipanjan's diabetes prediction app")
 # Add a slider widget
-slider_value = st.slider("Select a value:", 0, 100, 50)
+age = st.slider("Age:", 0, 105, 50)
+bmi = st.slider("bmi:",0, 50, 10)
+glu = st.slider("Sugar level:", 0, 300, 120)
+bp = st.slider("blood pressure:", 0, 200, 120)
 
-# Display the selected value
-st.write(f"You selected: {slider_value}")
+hasDiabetes=model.predict_diabetes(glu,bmi,bp,age)
 
-# Add a text input widget
-text_input = st.text_input("Enter some text:", "Hello, Spandan")
 
 # Display the entered text
-st.write(f"You entered: {text_input}")
+msg="predicting"
+if hasDiabetes <0.4:
+    msg="you have less chance having diabetes"
+elif hasDiabetes<0.75:
+    msg="you have mild  chance having diabetes,pls consult doctor"
+else:
+    msg="Dude you are swrewed.visit doctor right now"
+
+st.write(f"comment :{msg}")
+st.write(f"Probability of Diabetes: {round(hasDiabetes*100)} %")
